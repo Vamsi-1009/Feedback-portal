@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Lookup - AI Karyashala</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Montserrat:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=UnifrakturCook:wght@700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .lookup-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+            display: none;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e5e7eb;
+            border-top-color: #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-msg {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 15px;
+            color: #991b1b;
+            display: none;
+        }
+
+        .error-msg.active {
+            display: block;
+        }
+
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 AI Karyashala Certificate Lookup</h1>
+            <p>Enter your roll number to view and share your certificate</p>
+        </div>
+
+        <div class="lookup-card">
+            <div class="input-group">
+                <label for="rollno-input">Roll Number</label>
+                <input type="text" id="rollno-input" placeholder="e.g., 25B21A4201" autofocus>
+            </div>
+            <button id="lookup-btn" class="btn-primary">View Certificate</button>
+            <div id="error-msg" class="error-msg"></div>
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Checking certificate...</p>
+        </div>
+
+        <div class="footer">
+            <p>AI Karyashala Bootcamp - KIET, Kakinada | Feb 7-8, 2026</p>
+            <p><a href="https://aikaryashala.com">aikaryashala.com</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Show error message
+        function showError(message) {
+            const errorMsg = document.getElementById('error-msg');
+            errorMsg.textContent = message;
+            errorMsg.classList.add('active');
+            setTimeout(() => errorMsg.classList.remove('active'), 5000);
+        }
+
+        // Show loading state
+        function showLoading(show) {
+            const loading = document.getElementById('loading');
+            const lookupBtn = document.getElementById('lookup-btn');
+
+            if (show) {
+                loading.classList.add('active');
+                lookupBtn.disabled = true;
+                lookupBtn.textContent = 'Checking...';
+            } else {
+                loading.classList.remove('active');
+                lookupBtn.disabled = false;
+                lookupBtn.textContent = 'View Certificate';
+            }
+        }
+
+        // Lookup and redirect to certificate
+        async function lookupCertificate() {
+            let rollno = document.getElementById('rollno-input').value.trim().toUpperCase();
+
+            // Strip "AIK" prefix if user typed it, then always prepend it
+            if (rollno.startsWith('AIK')) {
+                rollno = rollno.substring(3);
+            }
+            const certId = 'AIK' + rollno;
+
+            if (!rollno) {
+                showError('Please enter a roll number');
+                return;
+            }
+
+            // Show loading
+            showLoading(true);
+
+            try {
+                // Check if the certificate page exists
+                const certificateUrl = `${certId}/index.html`;
+                const response = await fetch(certificateUrl, { method: 'HEAD' });
+
+                if (response.ok) {
+                    // Certificate exists, redirect to it
+                    window.location.href = `${certId}/`;
+                } else {
+                    // Certificate not found
+                    showLoading(false);
+                    showError('Certificate not found. Please check the roll number and try again.');
+                }
+            } catch (error) {
+                console.error('Error checking certificate:', error);
+                showLoading(false);
+                showError('Error checking certificate. Please try again.');
+            }
+        }
+
+        // Event listeners
+        document.getElementById('lookup-btn').addEventListener('click', lookupCertificate);
+        document.getElementById('rollno-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') lookupCertificate();
+        });
+    </script>
+</body>
+
+</html>
