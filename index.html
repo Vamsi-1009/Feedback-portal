@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Testimonials - AI Karyashala Bootcamp</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151b3d;
+            --bg-card: #1a2249;
+            --bg-card-hover: #1f2856;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #7c3aed;
+            --accent-tertiary: #f59e0b;
+            --accent-pink: #ec4899;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #2d3a5f;
+            --glow-cyan: rgba(0, 217, 255, 0.4);
+            --glow-purple: rgba(124, 58, 237, 0.4);
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Enhanced Animated Background */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.04;
+            background-image: 
+                radial-gradient(circle at 20% 50%, var(--accent-primary) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, var(--accent-secondary) 0%, transparent 50%),
+                linear-gradient(30deg, var(--accent-primary) 12%, transparent 12.5%, transparent 87%, var(--accent-primary) 87.5%, var(--accent-primary)),
+                linear-gradient(150deg, var(--accent-primary) 12%, transparent 12.5%, transparent 87%, var(--accent-primary) 87.5%, var(--accent-primary));
+            background-size: 800px 800px, 600px 600px, 80px 140px, 80px 140px;
+            background-position: 0 0, 0 0, 0 0, 40px 70px;
+            animation: patternShift 20s linear infinite;
+        }
+
+        @keyframes patternShift {
+            0% { background-position: 0 0, 0 0, 0 0, 40px 70px; }
+            100% { background-position: 0 140px, 0 0, 0 140px, 40px 210px; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Enhanced Header */
+        header {
+            padding: 4rem 0 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .glow-orb {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .glow-orb-1 {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            top: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .glow-orb-2 {
+            background: var(--accent-pink);
+            top: -100px;
+            right: 10%;
+            animation: float 12s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-30px) scale(1.15); }
+        }
+
+        h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: normal;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease-out;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 1rem;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+            font-weight: 500;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Enhanced Control Buttons */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 8px 30px rgba(0, 217, 255, 0.3), 0 4px 15px rgba(124, 58, 237, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .control-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .control-btn:hover::before {
+            left: 100%;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(0, 217, 255, 0.5), 0 8px 25px rgba(124, 58, 237, 0.3);
+        }
+
+        .control-btn:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        .shuffle-icon {
+            font-size: 1.5rem;
+            animation: rotateIcon 3s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .control-btn:hover .shuffle-icon {
+            animation-play-state: running;
+        }
+
+        @keyframes rotateIcon {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Enhanced Testimonials Grid */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin: 3rem 0;
+            animation: fadeIn 0.8s ease-out 0.4s backwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ENHANCED Testimonial Card - Focus on Feedback */
+        .testimonial-card {
+            background: linear-gradient(145deg, var(--bg-card), rgba(26, 34, 73, 0.8));
+            border: 2px solid transparent;
+            border-radius: 24px;
+            padding: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            animation: cardAppear 0.6s ease-out backwards;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(124, 58, 237, 0.1));
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            border-radius: 24px;
+        }
+
+        .testimonial-card::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-pink));
+            border-radius: 24px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 
+                        0 0 40px rgba(0, 217, 255, 0.2),
+                        0 0 60px rgba(124, 58, 237, 0.15);
+        }
+
+        .testimonial-card:hover::before {
+            opacity: 1;
+        }
+
+        .testimonial-card:hover::after {
+            opacity: 1;
+        }
+
+        /* Card Header Section */
+        .card-header {
+            padding: 2rem 2rem 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Student Header */
+        .student-header {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .student-image-wrapper {
+            position: relative;
+        }
+
+        .student-image-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .testimonial-card:hover .student-image-wrapper::before {
+            opacity: 0.6;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+        }
+
+        .student-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--bg-card);
+            box-shadow: 0 8px 20px rgba(0, 217, 255, 0.4);
+            transition: transform 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-card:hover .student-image {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .student-info {
+            flex: 1;
+        }
+
+        .student-name {
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.01em;
+        }
+
+        .student-details {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .student-branch {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(124, 58, 237, 0.15));
+            padding: 0.35rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--accent-primary);
+            margin-top: 0.4rem;
+            font-weight: 700;
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        /* Enhanced Rating Stars */
+        .rating {
+            display: flex;
+            gap: 0.4rem;
+            margin-top: 1.25rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .star {
+            color: var(--accent-tertiary);
+            font-size: 1.5rem;
+            filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5));
+            transition: transform 0.3s ease;
+        }
+
+        .testimonial-card:hover .star {
+            transform: scale(1.15) rotate(15deg);
+        }
+
+        .star.empty {
+            color: var(--text-muted);
+            filter: none;
+        }
+
+        /* HIGHLIGHTED REVIEW SECTION - Main Focus */
+        .review-section {
+            padding: 2rem;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(124, 58, 237, 0.05));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .review-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(0, 217, 255, 0.08), transparent 60%),
+                        radial-gradient(circle at bottom left, rgba(124, 58, 237, 0.08), transparent 60%);
+            pointer-events: none;
+        }
+
+        .review-text {
+            color: var(--text-primary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+            font-style: italic;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .review-text::before {
+            content: '"';
+            font-size: 5rem;
+            color: var(--accent-primary);
+            opacity: 0.15;
+            position: absolute;
+            top: -2rem;
+            left: -1rem;
+            font-family: 'DM Serif Display', serif;
+            line-height: 1;
+            z-index: -1;
+            filter: drop-shadow(0 0 20px var(--glow-cyan));
+        }
+
+        .review-text::after {
+            content: '"';
+            font-size: 5rem;
+            color: var(--accent-secondary);
+            opacity: 0.15;
+            position: absolute;
+            bottom: -3rem;
+            right: -1rem;
+            font-family: 'DM Serif Display', serif;
+            line-height: 1;
+            z-index: -1;
+            filter: drop-shadow(0 0 20px var(--glow-purple));
+        }
+
+        /* Review Glow Effect on Hover */
+        .testimonial-card:hover .review-section {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.12), rgba(124, 58, 237, 0.12));
+        }
+
+        .testimonial-card:hover .review-text {
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+        }
+
+        /* Enhanced Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            margin: 5rem 0 4rem;
+            flex-wrap: wrap;
+        }
+
+        .pagination-btn {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-card-hover));
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-weight: 700;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-color: var(--accent-primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.4);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .page-numbers {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .page-number {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-card-hover));
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .page-number:hover {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(124, 58, 237, 0.2));
+            border-color: var(--accent-primary);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 217, 255, 0.3);
+        }
+
+        .page-number.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-color: var(--accent-primary);
+            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.5);
+            transform: scale(1.1);
+            color: white;
+        }
+
+        .page-info {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            padding: 0 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 5rem 0;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            border: 5px solid var(--border);
+            border-top: 5px solid var(--accent-primary);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Enhanced Back Button */
+        .back-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-card-hover));
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.9rem 1.8rem;
+            border-radius: 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.4s ease;
+            z-index: 100;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-color: var(--accent-primary);
+            color: white;
+            transform: translateX(-5px) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.4);
+        }
+
+        .back-btn span:first-child {
+            font-size: 1.3rem;
+            transition: transform 0.3s ease;
+        }
+
+        .back-btn:hover span:first-child {
+            transform: translateX(-5px);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .stats-bar {
+                gap: 2rem;
+            }
+
+            .stat-item {
+                padding: 0.75rem 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 2.5rem;
+            }
+
+            .back-btn {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.7rem 1.4rem;
+            }
+
+            .control-btn {
+                padding: 1rem 1.8rem;
+                font-size: 1rem;
+            }
+
+            .student-image {
+                width: 70px;
+                height: 70px;
+            }
+
+            .review-text {
+                font-size: 1rem;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <a href="index.html" class="back-btn">
+        <span>←</span>
+        <span>Back to Home</span>
+    </a>
+
+    <header>
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="glow-orb glow-orb-2"></div>
+        <div class="container">
+            <h1>Student Testimonials</h1>
+            <p class="subtitle">Hear what our bootcamp participants have to say about their transformative experience</p>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalStudents">0</div>
+                    <div class="stat-label">Total Reviews</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="averageRating">0.0</div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="controls">
+            <button class="control-btn" onclick="showRandomProfiles()">
+                <span class="shuffle-icon">🔀</span>
+                <span>Show Random 10 Profiles</span>
+            </button>
+        </div>
+
+        <div id="testimonials-container" class="testimonials-grid">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading testimonials...</p>
+            </div>
+        </div>
+
+        <div class="pagination" id="pagination">
+            <!-- Pagination will be inserted here -->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://cyuwzrpvepcvaftyfesn.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5dXd6cnB2ZXBjdmFmdHlmZXNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3ODc1MjksImV4cCI6MjA4NjM2MzUyOX0.NFlp7Xr2kERP43-yVZhhFC956pPmBmp2kLwgA58J-0Q';
+
+        // Initialize Supabase client
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let studentsData = [];
+        let currentPage = 1;
+        const studentsPerPage = 10;
+        let isRandomMode = false;
+
+        // Load students data from Supabase
+        async function loadStudents() {
+            try {
+                console.log('Loading students from Supabase...');
+
+                // Get public URL for JSON file
+                const { data: urlData } = supabaseClient.storage
+                    .from('data')
+                    .getPublicUrl('students_data.json');
+
+                console.log('JSON URL:', urlData.publicUrl);
+
+                // Fetch JSON directly using the public URL
+                const response = await fetch(urlData.publicUrl);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                studentsData = await response.json();
+
+                console.log(`✓ Loaded ${studentsData.length} students successfully!`);
+
+                // Update image URLs using getPublicUrl
+                studentsData = studentsData.map(student => {
+                    const imagePath = (student.image || '').replace('student_images/', '');
+                    const { data: imageUrlData } = supabaseClient.storage
+                        .from('student-images')
+                        .getPublicUrl(imagePath);
+
+                    return {
+                        ...student,
+                        image: imageUrlData.publicUrl
+                    };
+                });
+
+                console.log('✓ Image URLs updated');
+
+                // Update stats
+                document.getElementById('totalStudents').textContent = studentsData.length;
+
+                const safeLen = studentsData.length || 1;
+                const avgRating = (studentsData.reduce((sum, s) => sum + (Number(s.rating) || 0), 0) / safeLen).toFixed(1);
+                document.getElementById('averageRating').textContent = avgRating;
+
+                // Display first page
+                displayStudents();
+            } catch (error) {
+                console.error('❌ Error loading students:', error);
+                document.getElementById('testimonials-container').innerHTML =
+                    `<div class="loading">
+                        <p style="color: #f59e0b; font-size: 1.2rem; font-weight: 600;">⚠️ Error loading testimonials</p>
+                        <p style="font-size: 0.95rem; margin-top: 1rem;">Error: ${error.message}</p>
+                        <p style="font-size: 0.85rem; margin-top: 1rem;">Steps to fix:</p>
+                        <p style="font-size: 0.85rem;">1. Make sure buckets "data" and "student-images" are PUBLIC</p>
+                        <p style="font-size: 0.85rem;">2. Files are uploaded correctly</p>
+                        <p style="font-size: 0.85rem;">3. Check browser console (F12) for details</p>
+                    </div>`;
+            }
+        }
+
+        // Fisher-Yates shuffle algorithm
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Show random 10 profiles
+        function showRandomProfiles() {
+            if (studentsData.length === 0) {
+                alert('Please wait for data to load first!');
+                return;
+            }
+
+            isRandomMode = true;
+            const shuffled = shuffleArray(studentsData);
+            const randomStudents = shuffled.slice(0, 10);
+
+            displayStudentsArray(randomStudents);
+
+            // Hide pagination in random mode
+            document.getElementById('pagination').style.display = 'none';
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Remove AIK prefix for display only
+        function cleanRollNumber(rollNumber) {
+            return String(rollNumber || '').replace(/^AIK/, '');
+        }
+
+        // Create star rating HTML
+        function createStars(rating) {
+            const r = Number(rating) || 0;
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += `<span class="star ${i <= r ? '' : 'empty'}">★</span>`;
+            }
+            return stars;
+        }
+
+        // Display students array (for random mode)
+        function displayStudentsArray(students) {
+            const container = document.getElementById('testimonials-container');
+
+            if (!students || students.length === 0) {
+                container.innerHTML = '<div class="loading"><p>No testimonials found.</p></div>';
+                return;
+            }
+
+            container.innerHTML = students.map((student, index) => `
+                <div class="testimonial-card" style="animation-delay: ${index * 0.05}s;">
+                    <div class="card-header">
+                        <div class="student-header">
+                            <div class="student-image-wrapper">
+                                <img src="${student.image}" alt="${student.name}" class="student-image"
+                                     onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22><rect fill=%22%231a2249%22 width=%22100%22 height=%22100%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%2300d9ff%22 font-size=%2240%22>${String(student.name || 'S').charAt(0)}</text></svg>'">
+                            </div>
+                            <div class="student-info">
+                                <div class="student-name">${student.name || ''}</div>
+                                <div class="student-details">${cleanRollNumber(student.roll_number || '')}</div>
+                                <div class="student-branch">${student.branch || ''}</div>
+                            </div>
+                        </div>
+                        <div class="rating">
+                            ${createStars(student.rating)}
+                        </div>
+                    </div>
+                    <div class="review-section">
+                        <div class="review-text">
+                            ${student.review || ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Display students for current page
+        function displayStudents() {
+            isRandomMode = false;
+            const startIndex = (currentPage - 1) * studentsPerPage;
+            const endIndex = startIndex + studentsPerPage;
+            const studentsToShow = studentsData.slice(startIndex, endIndex);
+
+            displayStudentsArray(studentsToShow);
+            updatePagination();
+
+            // Show pagination in normal mode
+            document.getElementById('pagination').style.display = 'flex';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Update pagination controls
+        function updatePagination() {
+            const totalPages = Math.ceil(studentsData.length / studentsPerPage);
+            const pagination = document.getElementById('pagination');
+
+            let paginationHTML = `
+                <button class="pagination-btn" onclick="changePage(${currentPage - 1})"
+                        ${currentPage === 1 ? 'disabled' : ''}>
+                    ← Previous
+                </button>
+
+                <div class="page-numbers">
+            `;
+
+            // Show page numbers with ellipsis for large page counts
+            const maxVisiblePages = 7;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+            if (endPage - startPage < maxVisiblePages - 1) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+
+            if (startPage > 1) {
+                paginationHTML += `<div class="page-number" onclick="changePage(1)">1</div>`;
+                if (startPage > 2) {
+                    paginationHTML += `<div class="page-info">...</div>`;
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                paginationHTML += `
+                    <div class="page-number ${i === currentPage ? 'active' : ''}"
+                         onclick="changePage(${i})">
+                        ${i}
+                    </div>
+                `;
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    paginationHTML += `<div class="page-info">...</div>`;
+                }
+                paginationHTML += `<div class="page-number" onclick="changePage(${totalPages})">${totalPages}</div>`;
+            }
+
+            paginationHTML += `
+                </div>
+
+                <div class="page-info">
+                    Page ${currentPage} of ${totalPages || 1}
+                </div>
+
+                <button class="pagination-btn" onclick="changePage(${currentPage + 1})"
+                        ${currentPage === totalPages ? 'disabled' : ''}>
+                    Next →
+                </button>
+            `;
+
+            pagination.innerHTML = paginationHTML;
+        }
+
+        // Change page
+        function changePage(page) {
+            const totalPages = Math.ceil(studentsData.length / studentsPerPage);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            displayStudents();
+        }
+
+        // Initialize
+        loadStudents();
+    </script>
+</body>
+</html>
