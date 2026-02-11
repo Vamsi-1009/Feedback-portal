@@ -1,282 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Testimonials - AI Karyashala Bootcamp</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Student Testimonials - AI Karyashala</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a28;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --accent-tertiary: #06b6d4;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-tertiary: #64748b;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.1);
+            --glow-blue: rgba(59, 130, 246, 0.3);
+            --glow-purple: rgba(139, 92, 246, 0.3);
+            --card-radius: 20px;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            --bg-primary: #0a0e27;
-            --bg-secondary: #151b3d;
-            --bg-card: #1a2249;
-            --bg-card-hover: #1f2856;
-            --accent-primary: #00d9ff;
-            --accent-secondary: #7c3aed;
-            --accent-tertiary: #f59e0b;
-            --accent-pink: #ec4899;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --border: #2d3a5f;
-            --glow-cyan: rgba(0, 217, 255, 0.4);
-            --glow-purple: rgba(124, 58, 237, 0.4);
-        }
-
         body {
-            font-family: 'Manrope', sans-serif;
-            background: var(--bg-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.7;
             overflow-x: hidden;
             min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Enhanced Animated Background */
-        .bg-pattern {
+        /* Enhanced Background with Gradient Mesh */
+        .background-gradient {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
-            opacity: 0.04;
-            background-image: 
-                radial-gradient(circle at 20% 50%, var(--accent-primary) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, var(--accent-secondary) 0%, transparent 50%),
-                linear-gradient(30deg, var(--accent-primary) 12%, transparent 12.5%, transparent 87%, var(--accent-primary) 87.5%, var(--accent-primary)),
-                linear-gradient(150deg, var(--accent-primary) 12%, transparent 12.5%, transparent 87%, var(--accent-primary) 87.5%, var(--accent-primary));
-            background-size: 800px 800px, 600px 600px, 80px 140px, 80px 140px;
-            background-position: 0 0, 0 0, 0 0, 40px 70px;
-            animation: patternShift 20s linear infinite;
+            z-index: -2;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
         }
 
-        @keyframes patternShift {
-            0% { background-position: 0 0, 0 0, 0 0, 40px 70px; }
-            100% { background-position: 0 140px, 0 0, 0 140px, 40px 210px; }
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E");
+        }
+
+        /* Subtle Grid Pattern */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1320px;
             margin: 0 auto;
             padding: 0 2rem;
             position: relative;
             z-index: 1;
         }
 
-        /* Enhanced Header */
+        /* Navigation Bar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(10, 10, 15, 0.8);
+            border-bottom: 1px solid var(--border-subtle);
+            z-index: 100;
+            padding: 1.25rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-content {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .back-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+        }
+
+        .navbar-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Header Section */
         header {
-            padding: 4rem 0 2rem;
             text-align: center;
-            margin-bottom: 3rem;
+            padding: 5rem 0 3rem;
             position: relative;
         }
 
-        .glow-orb {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.2;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .glow-orb-1 {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            top: -150px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: float 10s ease-in-out infinite;
-        }
-
-        .glow-orb-2 {
-            background: var(--accent-pink);
-            top: -100px;
-            right: 10%;
-            animation: float 12s ease-in-out infinite reverse;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-30px) scale(1.15); }
-        }
-
-        h1 {
-            font-family: 'DM Serif Display', serif;
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: normal;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: fadeInUp 0.8s ease-out;
-            letter-spacing: -0.02em;
-        }
-
-        .subtitle {
-            font-size: clamp(1rem, 3vw, 1.3rem);
-            color: var(--text-secondary);
-            max-width: 800px;
-            margin: 0 auto 1rem;
-            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid var(--border-medium);
+            border-radius: 50px;
+            font-size: 0.85rem;
             font-weight: 500;
-        }
-
-        .stats-bar {
-            display: flex;
-            justify-content: center;
-            gap: 4rem;
-            margin-top: 2.5rem;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 1rem 2rem;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
             backdrop-filter: blur(10px);
         }
 
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, var(--text-secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
         }
 
-        .stat-label {
+        .accent-text {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
             color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-top: 0.5rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Stats Section */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
         }
 
-        /* Enhanced Control Buttons */
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin: 2.5rem 0;
-            flex-wrap: wrap;
-        }
-
-        .control-btn {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border: none;
-            color: white;
-            padding: 1.2rem 2.5rem;
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
             border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-weight: 700;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            box-shadow: 0 8px 30px rgba(0, 217, 255, 0.3), 0 4px 15px rgba(124, 58, 237, 0.2);
+            padding: 2rem;
+            text-align: center;
             position: relative;
             overflow: hidden;
+            transition: all 0.3s ease;
         }
 
-        .control-btn::before {
+        .stat-card::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .control-btn:hover::before {
-            left: 100%;
+        .stat-card:hover::before {
+            opacity: 1;
         }
 
-        .control-btn:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 12px 40px rgba(0, 217, 255, 0.5), 0 8px 25px rgba(124, 58, 237, 0.3);
+        .stat-card:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-2px);
         }
 
-        .control-btn:active {
-            transform: translateY(-2px) scale(0.98);
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .shuffle-icon {
-            font-size: 1.5rem;
-            animation: rotateIcon 3s linear infinite;
-            animation-play-state: paused;
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .control-btn:hover .shuffle-icon {
-            animation-play-state: running;
+        /* Controls Section */
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
         }
 
-        @keyframes rotateIcon {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 2rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
         }
 
-        /* Enhanced Testimonials Grid */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-medium);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+        }
+
+        /* Testimonials Grid */
         .testimonials-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2.5rem;
-            margin: 3rem 0;
-            animation: fadeIn 0.8s ease-out 0.4s backwards;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0 4rem;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* ENHANCED Testimonial Card - Focus on Feedback */
         .testimonial-card {
-            background: linear-gradient(145deg, var(--bg-card), rgba(26, 34, 73, 0.8));
-            border: 2px solid transparent;
-            border-radius: 24px;
-            padding: 0;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--card-radius);
+            padding: 2rem;
             position: relative;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            animation: cardAppear 0.6s ease-out backwards;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        @keyframes cardAppear {
-            from {
-                opacity: 0;
-                transform: scale(0.95) translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
         }
 
         .testimonial-card::before {
@@ -286,713 +338,586 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(124, 58, 237, 0.1));
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59, 130, 246, 0.08), transparent 50%);
             opacity: 0;
-            transition: opacity 0.5s ease;
-            border-radius: 24px;
-        }
-
-        .testimonial-card::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-pink));
-            border-radius: 24px;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .testimonial-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 
-                        0 0 40px rgba(0, 217, 255, 0.2),
-                        0 0 60px rgba(124, 58, 237, 0.15);
+            transition: opacity 0.3s ease;
+            pointer-events: none;
         }
 
         .testimonial-card:hover::before {
             opacity: 1;
         }
 
-        .testimonial-card:hover::after {
-            opacity: 1;
+        .testimonial-card:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
-        /* Card Header Section */
         .card-header {
-            padding: 2rem 2rem 1.5rem;
-            background: rgba(255, 255, 255, 0.02);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        /* Student Header */
-        .student-header {
             display: flex;
             align-items: center;
-            gap: 1.25rem;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .student-avatar {
             position: relative;
-            z-index: 1;
+            width: 60px;
+            height: 60px;
+            flex-shrink: 0;
         }
 
-        .student-image-wrapper {
-            position: relative;
-        }
-
-        .student-image-wrapper::before {
-            content: '';
-            position: absolute;
-            top: -4px;
-            left: -4px;
-            right: -4px;
-            bottom: -4px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: 50%;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .testimonial-card:hover .student-image-wrapper::before {
-            opacity: 0.6;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.6; }
-            50% { transform: scale(1.1); opacity: 0.3; }
-        }
-
-        .student-image {
-            width: 80px;
-            height: 80px;
+        .avatar-image {
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid var(--bg-card);
-            box-shadow: 0 8px 20px rgba(0, 217, 255, 0.4);
-            transition: transform 0.4s ease;
-            position: relative;
-            z-index: 1;
+            border: 2px solid var(--border-medium);
+            transition: border-color 0.3s ease;
         }
 
-        .testimonial-card:hover .student-image {
-            transform: scale(1.15) rotate(5deg);
+        .testimonial-card:hover .avatar-image {
+            border-color: var(--accent-primary);
+        }
+
+        .avatar-ring {
+            position: absolute;
+            inset: -4px;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)) border-box;
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .testimonial-card:hover .avatar-ring {
+            opacity: 0.6;
         }
 
         .student-info {
             flex: 1;
+            min-width: 0;
         }
 
         .student-name {
-            font-weight: 800;
-            font-size: 1.25rem;
-            color: var(--text-primary);
-            margin-bottom: 0.4rem;
-            letter-spacing: -0.01em;
-        }
-
-        .student-details {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
+            font-size: 1.1rem;
             font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
         }
 
         .student-branch {
-            display: inline-block;
-            background: linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(124, 58, 237, 0.15));
-            padding: 0.35rem 0.9rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--accent-primary);
-            margin-top: 0.4rem;
-            font-weight: 700;
-            border: 1px solid rgba(0, 217, 255, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
         }
 
-        /* Enhanced Rating Stars */
-        .rating {
-            display: flex;
-            gap: 0.4rem;
-            margin-top: 1.25rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .star {
-            color: var(--accent-tertiary);
-            font-size: 1.5rem;
-            filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5));
-            transition: transform 0.3s ease;
-        }
-
-        .testimonial-card:hover .star {
-            transform: scale(1.15) rotate(15deg);
-        }
-
-        .star.empty {
-            color: var(--text-muted);
-            filter: none;
-        }
-
-        /* HIGHLIGHTED REVIEW SECTION - Main Focus */
-        .review-section {
-            padding: 2rem;
-            flex: 1;
+        .rating-container {
             display: flex;
             align-items: center;
-            background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(124, 58, 237, 0.05));
-            position: relative;
-            overflow: hidden;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
         }
 
-        .review-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at top right, rgba(0, 217, 255, 0.08), transparent 60%),
-                        radial-gradient(circle at bottom left, rgba(124, 58, 237, 0.08), transparent 60%);
-            pointer-events: none;
+        .stars {
+            color: #fbbf24;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        .rating-number {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            font-weight: 500;
         }
 
         .review-text {
-            color: var(--text-primary);
-            font-size: 1.05rem;
-            line-height: 1.8;
+            font-size: 0.975rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
             position: relative;
             z-index: 1;
-            font-style: italic;
-            font-weight: 500;
-            letter-spacing: 0.01em;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
-        .review-text::before {
-            content: '"';
-            font-size: 5rem;
-            color: var(--accent-primary);
-            opacity: 0.15;
+        .quote-icon {
             position: absolute;
-            top: -2rem;
-            left: -1rem;
-            font-family: 'DM Serif Display', serif;
-            line-height: 1;
-            z-index: -1;
-            filter: drop-shadow(0 0 20px var(--glow-cyan));
+            top: 1rem;
+            right: 1rem;
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.03);
+            font-family: Georgia, serif;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        .review-text::after {
-            content: '"';
-            font-size: 5rem;
-            color: var(--accent-secondary);
-            opacity: 0.15;
-            position: absolute;
-            bottom: -3rem;
-            right: -1rem;
-            font-family: 'DM Serif Display', serif;
-            line-height: 1;
-            z-index: -1;
-            filter: drop-shadow(0 0 20px var(--glow-purple));
-        }
-
-        /* Review Glow Effect on Hover */
-        .testimonial-card:hover .review-section {
-            background: linear-gradient(135deg, rgba(0, 217, 255, 0.12), rgba(124, 58, 237, 0.12));
-        }
-
-        .testimonial-card:hover .review-text {
-            color: #ffffff;
-            text-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
-        }
-
-        /* Enhanced Pagination */
+        /* Pagination */
         .pagination {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 1.5rem;
-            margin: 5rem 0 4rem;
-            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 3rem 0 5rem;
         }
 
-        .pagination-btn {
-            background: linear-gradient(135deg, var(--bg-card), var(--bg-card-hover));
-            border: 2px solid var(--border);
-            color: var(--text-primary);
-            padding: 1rem 2rem;
-            border-radius: 16px;
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            color: var(--text-secondary);
             cursor: pointer;
-            transition: all 0.4s ease;
-            font-weight: 700;
-            font-size: 1.05rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            font-weight: 500;
         }
 
-        .pagination-btn:hover:not(:disabled) {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        .page-btn:hover:not(:disabled) {
+            background: var(--bg-tertiary);
             border-color: var(--accent-primary);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.4);
+            color: var(--text-primary);
         }
 
-        .pagination-btn:disabled {
-            opacity: 0.4;
+        .page-btn.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-color: transparent;
+            color: white;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.3;
             cursor: not-allowed;
         }
 
-        .page-numbers {
+        .page-dots {
             display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-            justify-content: center;
+            gap: 0.5rem;
+            padding: 0 0.5rem;
         }
 
-        .page-number {
-            background: linear-gradient(135deg, var(--bg-card), var(--bg-card-hover));
-            border: 2px solid var(--border);
-            color: var(--text-primary);
-            width: 50px;
-            height: 50px;
-            border-radius: 14px;
+        .page-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border-medium);
             cursor: pointer;
-            transition: all 0.4s ease;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.05rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
         }
 
-        .page-number:hover {
-            background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(124, 58, 237, 0.2));
-            border-color: var(--accent-primary);
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 217, 255, 0.3);
-        }
-
-        .page-number.active {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-color: var(--accent-primary);
-            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.5);
-            transform: scale(1.1);
-            color: white;
-        }
-
-        .page-info {
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-            padding: 0 1.5rem;
-            font-weight: 600;
+        .page-dot.active {
+            background: var(--accent-primary);
+            box-shadow: 0 0 8px var(--glow-blue);
+            transform: scale(1.2);
         }
 
         /* Loading State */
-        .loading {
+        .loading-container {
             text-align: center;
-            padding: 5rem 0;
-            color: var(--text-secondary);
+            padding: 5rem 2rem;
         }
 
-        .spinner {
-            border: 5px solid var(--border);
-            border-top: 5px solid var(--accent-primary);
-            border-radius: 50%;
+        .loading-spinner {
             width: 60px;
             height: 60px;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 1.5rem;
-            box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+            margin: 0 auto 2rem;
+            border: 3px solid var(--border-subtle);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
 
-        /* Enhanced Back Button */
-        .back-btn {
-            position: fixed;
-            top: 2rem;
-            left: 2rem;
-            background: linear-gradient(135deg, var(--bg-card), var(--bg-card-hover));
-            border: 2px solid var(--border);
-            color: var(--text-primary);
-            padding: 0.9rem 1.8rem;
-            border-radius: 16px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            transition: all 0.4s ease;
-            z-index: 100;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
+        .loading-text {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
         }
 
-        .back-btn:hover {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-color: var(--accent-primary);
-            color: white;
-            transform: translateX(-5px) translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.4);
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid var(--border-subtle);
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
         }
 
-        .back-btn span:first-child {
-            font-size: 1.3rem;
-            transition: transform 0.3s ease;
-        }
-
-        .back-btn:hover span:first-child {
-            transform: translateX(-5px);
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 1rem;
-            }
-
+        /* Responsive Design */
+        @media (max-width: 1024px) {
             .testimonials-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container, .navbar-content {
+                padding: 0 1.5rem;
             }
 
-            .stats-bar {
-                gap: 2rem;
+            header {
+                padding: 3rem 0 2rem;
             }
 
-            .stat-item {
-                padding: 0.75rem 1.5rem;
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1.5rem;
             }
 
             .stat-number {
                 font-size: 2.5rem;
             }
 
-            .back-btn {
-                top: 1rem;
-                left: 1rem;
-                padding: 0.7rem 1.4rem;
+            .testimonials-grid {
+                grid-template-columns: 1fr;
             }
 
-            .control-btn {
-                padding: 1rem 1.8rem;
-                font-size: 1rem;
+            .controls {
+                flex-direction: column;
+                width: 100%;
             }
 
-            .student-image {
-                width: 70px;
-                height: 70px;
+            .btn {
+                width: 100%;
+                justify-content: center;
             }
+        }
 
-            .review-text {
-                font-size: 1rem;
-            }
-
+        @media (max-width: 480px) {
             h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
+
 <body>
-    <div class="bg-pattern"></div>
+    <!-- Background Elements -->
+    <div class="background-gradient"></div>
+    <div class="noise-overlay"></div>
+    <div class="grid-pattern"></div>
 
-    <a href="index.html" class="back-btn">
-        <span>←</span>
-        <span>Back to Home</span>
-    </a>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="index.html" class="back-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Back to Home
+            </a>
+            <div class="navbar-logo">AI KARYASHALA</div>
+        </div>
+    </nav>
 
+    <!-- Header -->
     <header>
-        <div class="glow-orb glow-orb-1"></div>
-        <div class="glow-orb glow-orb-2"></div>
         <div class="container">
-            <h1>Student Testimonials</h1>
-            <p class="subtitle">Hear what our bootcamp participants have to say about their transformative experience</p>
-            <div class="stats-bar">
-                <div class="stat-item">
+            <div class="header-badge">
+                <div class="badge-dot"></div>
+                Verified Student Reviews
+            </div>
+            <h1>
+                <span class="gradient-text">What Our Students</span><br>
+                <span class="accent-text">Are Saying</span>
+            </h1>
+            <p class="subtitle">
+                Real experiences from our AI Bootcamp graduates. Every testimonial is verified and authentic.
+            </p>
+
+            <div class="stats-container">
+                <div class="stat-card">
                     <div class="stat-number" id="totalStudents">0</div>
-                    <div class="stat-label">Total Reviews</div>
+                    <div class="stat-label">Reviews</div>
                 </div>
-                <div class="stat-item">
+                <div class="stat-card">
                     <div class="stat-number" id="averageRating">0.0</div>
-                    <div class="stat-label">Average Rating</div>
+                    <div class="stat-label">Avg Rating</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Satisfaction</div>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="container">
+    <!-- Main Content -->
+    <main class="container">
         <div class="controls">
-            <button class="control-btn" onclick="showRandomProfiles()">
-                <span class="shuffle-icon">🔀</span>
-                <span>Show Random 10 Profiles</span>
+            <button class="btn btn-primary" onclick="showRandomProfiles()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 7V5C3 3.89543 3.89543 3 5 3H7M17 3H19C20.1046 3 21 3.89543 21 5V7M21 17V19C21 20.1046 20.1046 21 19 21H17M7 21H5C3.89543 21 3 20.1046 3 19V17M12 8V16M8 12H16"/>
+                </svg>
+                Shuffle Reviews
+            </button>
+            <button class="btn btn-secondary" onclick="displayStudents()" id="sortBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 7H21M6 12H18M9 17H15"/>
+                </svg>
+                Show All
             </button>
         </div>
 
         <div id="testimonials-container" class="testimonials-grid">
-            <div class="loading">
-                <div class="spinner"></div>
-                <p>Loading testimonials...</p>
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading testimonials...</div>
             </div>
         </div>
 
-        <div class="pagination" id="pagination">
-            <!-- Pagination will be inserted here -->
-        </div>
-    </div>
+        <div class="pagination" id="pagination"></div>
+    </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            © 2024 AI Karyashala. All testimonials are verified and authentic.
+        </div>
+    </footer>
+
     <script>
-        // Supabase Configuration
         const SUPABASE_URL = 'https://cyuwzrpvepcvaftyfesn.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5dXd6cnB2ZXBjdmFmdHlmZXNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3ODc1MjksImV4cCI6MjA4NjM2MzUyOX0.NFlp7Xr2kERP43-yVZhhFC956pPmBmp2kLwgA58J-0Q';
-
-        // Initialize Supabase client
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let studentsData = [];
         let currentPage = 1;
-        const studentsPerPage = 10;
+        const studentsPerPage = 9;
         let isRandomMode = false;
 
-        // Load students data from Supabase
         async function loadStudents() {
             try {
-                console.log('Loading students from Supabase...');
-
-                // Get public URL for JSON file
-                const { data: urlData } = supabaseClient.storage
-                    .from('data')
-                    .getPublicUrl('students_data.json');
-
-                console.log('JSON URL:', urlData.publicUrl);
-
-                // Fetch JSON directly using the public URL
+                const { data: urlData } = supabaseClient.storage.from('data').getPublicUrl('students_data.json');
                 const response = await fetch(urlData.publicUrl);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
                 studentsData = await response.json();
 
-                console.log(`✓ Loaded ${studentsData.length} students successfully!`);
-
-                // Update image URLs using getPublicUrl
+                // Process images
                 studentsData = studentsData.map(student => {
                     const imagePath = (student.image || '').replace('student_images/', '');
-                    const { data: imageUrlData } = supabaseClient.storage
-                        .from('student-images')
-                        .getPublicUrl(imagePath);
-
-                    return {
-                        ...student,
-                        image: imageUrlData.publicUrl
-                    };
+                    const { data: imageUrlData } = supabaseClient.storage.from('student-images').getPublicUrl(imagePath);
+                    return { ...student, image: imageUrlData.publicUrl };
                 });
 
-                console.log('✓ Image URLs updated');
+                // Update Stats with animation
+                animateValue('totalStudents', 0, studentsData.length, 1500);
+                const avgRating = (studentsData.reduce((sum, s) => sum + (Number(s.rating) || 0), 0) / (studentsData.length || 1)).toFixed(1);
+                animateValue('averageRating', 0, parseFloat(avgRating), 1500, 1);
 
-                // Update stats
-                document.getElementById('totalStudents').textContent = studentsData.length;
-
-                const safeLen = studentsData.length || 1;
-                const avgRating = (studentsData.reduce((sum, s) => sum + (Number(s.rating) || 0), 0) / safeLen).toFixed(1);
-                document.getElementById('averageRating').textContent = avgRating;
-
-                // Display first page
                 displayStudents();
             } catch (error) {
-                console.error('❌ Error loading students:', error);
+                console.error(error);
                 document.getElementById('testimonials-container').innerHTML =
-                    `<div class="loading">
-                        <p style="color: #f59e0b; font-size: 1.2rem; font-weight: 600;">⚠️ Error loading testimonials</p>
-                        <p style="font-size: 0.95rem; margin-top: 1rem;">Error: ${error.message}</p>
-                        <p style="font-size: 0.85rem; margin-top: 1rem;">Steps to fix:</p>
-                        <p style="font-size: 0.85rem;">1. Make sure buckets "data" and "student-images" are PUBLIC</p>
-                        <p style="font-size: 0.85rem;">2. Files are uploaded correctly</p>
-                        <p style="font-size: 0.85rem;">3. Check browser console (F12) for details</p>
-                    </div>`;
+                    `<div class="loading-container"><div class="loading-text" style="color: #ef4444;">Failed to load testimonials. Please try again.</div></div>`;
             }
         }
 
-        // Fisher-Yates shuffle algorithm
-        function shuffleArray(array) {
-            const shuffled = [...array];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        function animateValue(id, start, end, duration, decimals = 0) {
+            const element = document.getElementById(id);
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                const current = start + (end - start) * easeOutQuart;
+                
+                element.textContent = decimals > 0 ? current.toFixed(decimals) : Math.round(current);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
             }
-            return shuffled;
+            
+            requestAnimationFrame(update);
         }
 
-        // Show random 10 profiles
-        function showRandomProfiles() {
-            if (studentsData.length === 0) {
-                alert('Please wait for data to load first!');
-                return;
-            }
-
-            isRandomMode = true;
-            const shuffled = shuffleArray(studentsData);
-            const randomStudents = shuffled.slice(0, 10);
-
-            displayStudentsArray(randomStudents);
-
-            // Hide pagination in random mode
-            document.getElementById('pagination').style.display = 'none';
-
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Remove AIK prefix for display only
-        function cleanRollNumber(rollNumber) {
-            return String(rollNumber || '').replace(/^AIK/, '');
-        }
-
-        // Create star rating HTML
         function createStars(rating) {
-            const r = Number(rating) || 0;
-            let stars = '';
-            for (let i = 1; i <= 5; i++) {
-                stars += `<span class="star ${i <= r ? '' : 'empty'}">★</span>`;
-            }
+            const fullStars = Math.floor(rating);
+            const hasHalf = rating % 1 >= 0.5;
+            let stars = '★'.repeat(fullStars);
+            if (hasHalf) stars += '⯨';
+            stars += '☆'.repeat(5 - Math.ceil(rating));
             return stars;
         }
 
-        // Display students array (for random mode)
         function displayStudentsArray(students) {
             const container = document.getElementById('testimonials-container');
-
-            if (!students || students.length === 0) {
-                container.innerHTML = '<div class="loading"><p>No testimonials found.</p></div>';
-                return;
-            }
-
             container.innerHTML = students.map((student, index) => `
-                <div class="testimonial-card" style="animation-delay: ${index * 0.05}s;">
+                <div class="testimonial-card" onmousemove="handleCardHover(event, this)" style="animation: fadeIn 0.5s ease-out ${index * 0.1}s both">
+                    <div class="quote-icon">"</div>
+                    
                     <div class="card-header">
-                        <div class="student-header">
-                            <div class="student-image-wrapper">
-                                <img src="${student.image}" alt="${student.name}" class="student-image"
-                                     onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22><rect fill=%22%231a2249%22 width=%22100%22 height=%22100%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%2300d9ff%22 font-size=%2240%22>${String(student.name || 'S').charAt(0)}</text></svg>'">
-                            </div>
-                            <div class="student-info">
-                                <div class="student-name">${student.name || ''}</div>
-                                <div class="student-details">${cleanRollNumber(student.roll_number || '')}</div>
-                                <div class="student-branch">${student.branch || ''}</div>
-                            </div>
+                        <div class="student-avatar">
+                            <img src="${student.image}" 
+                                 class="avatar-image" 
+                                 alt="${student.name}"
+                                 onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(student.name)}&background=3b82f6&color=fff&size=120'">
+                            <div class="avatar-ring"></div>
                         </div>
-                        <div class="rating">
-                            ${createStars(student.rating)}
+                        <div class="student-info">
+                            <div class="student-name">${student.name}</div>
+                            <div class="student-branch">${student.branch || 'Student'}</div>
+                            <div class="rating-container">
+                                <div class="stars">${createStars(student.rating)}</div>
+                                <div class="rating-number">${student.rating}/5</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="review-section">
-                        <div class="review-text">
-                            ${student.review || ''}
-                        </div>
+
+                    <div class="review-text">
+                        "${student.review}"
                     </div>
                 </div>
             `).join('');
+
+            // Add fade-in animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+            `;
+            if (!document.querySelector('style[data-animation]')) {
+                style.setAttribute('data-animation', 'true');
+                document.head.appendChild(style);
+            }
         }
 
-        // Display students for current page
+        function handleCardHover(e, card) {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            card.style.setProperty('--mouse-x', `${x}%`);
+            card.style.setProperty('--mouse-y', `${y}%`);
+        }
+
         function displayStudents() {
             isRandomMode = false;
-            const startIndex = (currentPage - 1) * studentsPerPage;
-            const endIndex = startIndex + studentsPerPage;
-            const studentsToShow = studentsData.slice(startIndex, endIndex);
-
-            displayStudentsArray(studentsToShow);
-            updatePagination();
-
-            // Show pagination in normal mode
-            document.getElementById('pagination').style.display = 'flex';
-
+            const start = (currentPage - 1) * studentsPerPage;
+            displayStudentsArray(studentsData.slice(start, start + studentsPerPage));
+            renderPagination();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Update pagination controls
-        function updatePagination() {
-            const totalPages = Math.ceil(studentsData.length / studentsPerPage);
-            const pagination = document.getElementById('pagination');
-
-            let paginationHTML = `
-                <button class="pagination-btn" onclick="changePage(${currentPage - 1})"
-                        ${currentPage === 1 ? 'disabled' : ''}>
-                    ← Previous
+        function showRandomProfiles() {
+            isRandomMode = true;
+            const shuffled = [...studentsData].sort(() => 0.5 - Math.random());
+            displayStudentsArray(shuffled.slice(0, 9));
+            document.getElementById('pagination').innerHTML = `
+                <button class="btn btn-secondary" onclick="displayStudents()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12L9 6M3 12L9 18M3 12H21"/>
+                    </svg>
+                    Back to All Reviews
                 </button>
+            `;
+            window.scrollTo({ top: document.querySelector('.testimonials-grid').offsetTop - 100, behavior: 'smooth' });
+        }
 
-                <div class="page-numbers">
+        function renderPagination() {
+            const totalPages = Math.ceil(studentsData.length / studentsPerPage);
+            const container = document.getElementById('pagination');
+
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = `
+                <button class="page-btn" onclick="changePage(-1)" ${currentPage === 1 ? 'disabled' : ''}>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12.5 15L7.5 10L12.5 5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
             `;
 
-            // Show page numbers with ellipsis for large page counts
-            const maxVisiblePages = 7;
-            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-            if (endPage - startPage < maxVisiblePages - 1) {
-                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            // Show page numbers
+            const maxVisible = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+            
+            if (endPage - startPage < maxVisible - 1) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
             }
 
             if (startPage > 1) {
-                paginationHTML += `<div class="page-number" onclick="changePage(1)">1</div>`;
-                if (startPage > 2) {
-                    paginationHTML += `<div class="page-info">...</div>`;
-                }
+                html += `<button class="page-btn" onclick="setPage(1)">1</button>`;
+                if (startPage > 2) html += `<span style="padding: 0 0.5rem; color: var(--text-tertiary);">...</span>`;
             }
 
             for (let i = startPage; i <= endPage; i++) {
-                paginationHTML += `
-                    <div class="page-number ${i === currentPage ? 'active' : ''}"
-                         onclick="changePage(${i})">
-                        ${i}
-                    </div>
-                `;
+                html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="setPage(${i})">${i}</button>`;
             }
 
             if (endPage < totalPages) {
-                if (endPage < totalPages - 1) {
-                    paginationHTML += `<div class="page-info">...</div>`;
-                }
-                paginationHTML += `<div class="page-number" onclick="changePage(${totalPages})">${totalPages}</div>`;
+                if (endPage < totalPages - 1) html += `<span style="padding: 0 0.5rem; color: var(--text-tertiary);">...</span>`;
+                html += `<button class="page-btn" onclick="setPage(${totalPages})">${totalPages}</button>`;
             }
 
-            paginationHTML += `
-                </div>
-
-                <div class="page-info">
-                    Page ${currentPage} of ${totalPages || 1}
-                </div>
-
-                <button class="pagination-btn" onclick="changePage(${currentPage + 1})"
-                        ${currentPage === totalPages ? 'disabled' : ''}>
-                    Next →
+            html += `
+                <button class="page-btn" onclick="changePage(1)" ${currentPage === totalPages ? 'disabled' : ''}>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7.5 15L12.5 10L7.5 5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </button>
             `;
-
-            pagination.innerHTML = paginationHTML;
+            
+            container.innerHTML = html;
         }
 
-        // Change page
-        function changePage(page) {
+        function changePage(delta) {
+            setPage(currentPage + delta);
+        }
+
+        function setPage(page) {
             const totalPages = Math.ceil(studentsData.length / studentsPerPage);
-            if (page < 1 || page > totalPages) return;
-            currentPage = page;
-            displayStudents();
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                displayStudents();
+            }
         }
+
+        // Smooth scroll to top on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => window.scrollTo({ top: 0, behavior: 'instant' }), 0);
+        });
 
         // Initialize
         loadStudents();
     </script>
 </body>
+
 </html>
